@@ -1,0 +1,69 @@
+<div class="side-panel">
+  <div id="chatView" class="panel-view active">
+    <div class="chat-top-icons">
+      <button class="icon-btn" data-action="home">⌂</button>
+      <button class="icon-btn" data-action="chat">💬</button>
+      <button class="icon-btn" data-action="magic">✦</button>
+      <button class="icon-btn" id="clearHistoryBtn">♙</button>
+      <button class="icon-btn" id="openSettingsBtn">⚙</button>
+    </div>
+
+    <div id="sideChat" class="chat-list">
+      <div class="chat-message ai">
+        <div class="chat-avatar ai-avatar">Mane</div>
+        <div class="bubble">New Conversation Started</div>
+      </div>
+    </div>
+
+    <div class="capture-box">
+      <div class="capture-tabs">
+        <button class="capture-tab active">Camera</button>
+        <button class="capture-tab">Screen</button>
+        <button class="capture-tab">Browser</button>
+      </div>
+      <div class="capture-preview">
+        <div class="capture-camera-icon">📷</div>
+        <div class="capture-text">Capture preview</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsView" class="panel-view">
+    <div class="settings-header">
+      <button class="back-btn" id="backChatBtn">‹</button>
+      <div class="settings-title">Settings</div>
+    </div>
+
+    <div class="settings-tabs">
+      <button class="settings-tab active">General</button>
+      <button class="settings-tab">Model</button>
+      <button class="settings-tab">Voice</button>
+    </div>
+
+    <div class="settings-content">
+      <label class="setting-label">AI Name</label>
+      <input class="setting-input" id="settingName" value="Mane" />
+
+      <label class="setting-label">VRM File</label>
+      <input class="setting-input" id="settingVrm" placeholder="avatar.vrm" />
+
+      <label class="setting-label">Ollama Model</label>
+      <input class="setting-input" id="settingModel" placeholder="exaone3.5:7.8b" />
+
+      <div class="setting-row">
+        <span>STT</span>
+        <label class="switch"><input id="settingStt" type="checkbox"><span></span></label>
+      </div>
+
+      <div class="setting-row">
+        <span>TTS</span>
+        <label class="switch"><input id="settingTts" type="checkbox"><span></span></label>
+      </div>
+
+      <div class="settings-actions">
+        <button class="cancel-btn" id="cancelSettingsBtn">Cancel</button>
+        <button class="save-btn" id="saveSettingsBtn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

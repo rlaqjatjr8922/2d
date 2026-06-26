@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mane Box Layout</title>
+
+  <link rel="stylesheet" href="./reset.css" />
+  <link rel="stylesheet" href="./settings_box/settings_box.css" />
+  <link rel="stylesheet" href="./screen_box/screen_box.css" />
+  <link rel="stylesheet" href="./input_box/input_box.css" />
+
+  <style>
+    body {
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #090909;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .app-layout {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 370px 1fr;
+      grid-template-rows: 1fr 120px;
+      grid-template-areas:
+        "side stage"
+        "side input";
+    }
+
+    .side-slot {
+      grid-area: side;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .stage-slot {
+      grid-area: stage;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .input-slot {
+      grid-area: input;
+      min-width: 0;
+      min-height: 0;
+      background: #26282d;
+      border-top: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="side-slot">
+      <div class="side-panel">
+        <div id="chatView" class="panel-view active">
+          <div class="chat-top-icons">
+            <button class="icon-btn" data-action="home">⌂</button>
+            <button class="icon-btn" data-action="chat">💬</button>
+            <button class="icon-btn" data-action="magic">✦</button>
+            <button class="icon-btn" id="clearHistoryBtn">♙</button>
+            <button class="icon-btn" id="openSettingsBtn">⚙</button>
+          </div>
+
+          <div id="sideChat" class="chat-list">
+            <div class="chat-message ai">
+              <div class="chat-avatar ai-avatar">Mane</div>
+              <div class="bubble">New Conversation Started</div>
+            </div>
+          </div>
+
+          <div class="capture-box">
+            <div class="capture-tabs">
+              <button class="capture-tab active">Camera</button>
+              <button class="capture-tab">Screen</button>
+              <button class="capture-tab">Browser</button>
+            </div>
+            <div class="capture-preview">
+              <div class="capture-camera-icon">📷</div>
+              <div class="capture-text">Capture preview</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="settingsView" class="panel-view">
+          <div class="settings-header">
+            <button class="back-btn" id="backChatBtn">‹</button>
+            <div class="settings-title">Settings</div>
+          </div>
+
+          <div class="settings-tabs">
+            <button class="settings-tab active">General</button>
+            <button class="settings-tab">Model</button>
+            <button class="settings-tab">Voice</button>
+          </div>
+
+          <div class="settings-content">
+            <label class="setting-label">AI Name</label>
+            <input class="setting-input" id="settingName" value="Mane" />
+
+            <label class="setting-label">VRM File</label>
+            <input class="setting-input" id="settingVrm" placeholder="avatar.vrm" />
+
+            <label class="setting-label">Ollama Model</label>
+            <input class="setting-input" id="settingModel" placeholder="exaone3.5:7.8b" />
+
+            <div class="setting-row">
+              <span>STT</span>
+              <label class="switch"><input id="settingStt" type="checkbox"><span></span></label>
+            </div>
+
+            <div class="setting-row">
+              <span>TTS</span>
+              <label class="switch"><input id="settingTts" type="checkbox"><span></span></label>
+            </div>
+
+            <div class="settings-actions">
+              <button class="cancel-btn" id="cancelSettingsBtn">Cancel</button>
+              <button class="save-btn" id="saveSettingsBtn">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="stage-slot">
+      <div class="screen-stage">
+        <div class="connected-badge">Connected</div>
+
+        <div class="character">
+          <div class="hair"></div>
+          <div class="head">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="mouth"></div>
+          </div>
+          <div class="body"></div>
+          <div class="arm left-arm"></div>
+          <div class="arm right-arm"></div>
+          <div class="leg left-leg"></div>
+          <div class="leg right-leg"></div>
+        </div>
+
+        <div id="subtitleText" class="subtitle-box">New Conversation Started</div>
+      </div>
+    </main>
+
+    <section class="input-slot">
+      <div class="input-panel">
+        <div class="status-row">
+          <div id="statusPill" class="status-pill">idle</div>
+        </div>
+
+        <div class="message-area">
+          <button class="small-action mic-btn">🎙</button>
+          <button class="small-action hand-btn">✋</button>
+
+          <div class="input-wrap">
+            <span class="attach-icon">⌕</span>
+            <input id="chat-input" type="text" placeholder="Type your message..." />
+            <button id="send-btn" class="send-btn">➤</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const chatView = document.getElementById("chatView");
+    const settingsView = document.getElementById("settingsView");
+    const openSettingsBtn = document.getElementById("openSettingsBtn");
+    const backChatBtn = document.getElementById("backChatBtn");
+    const cancelSettingsBtn = document.getElementById("cancelSettingsBtn");
+    const saveSettingsBtn = document.getElementById("saveSettingsBtn");
+    const chatInput = document.getElementById("chat-input");
+    const sendBtn = document.getElementById("send-btn");
+    const sideChat = document.getElementById("sideChat");
+    const subtitleText = document.getElementById("subtitleText");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+    function showChat() {
+      settingsView.classList.remove("active");
+      chatView.classList.add("active");
+    }
+
+    function showSettings() {
+      chatView.classList.remove("active");
+      settingsView.classList.add("active");
+    }
+
+    function addMessage(role, text) {
+      const row = document.createElement("div");
+      row.className = `chat-message ${role}`;
+
+      const avatar = document.createElement("div");
+      avatar.className = role === "user" ? "chat-avatar user-avatar" : "chat-avatar ai-avatar";
+      avatar.textContent = role === "user" ? "나" : "Mane";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
+
+      if (role === "user") {
+        row.appendChild(bubble);
+        row.appendChild(avatar);
+      } else {
+        row.appendChild(avatar);
+        row.appendChild(bubble);
+      }
+
+      sideChat.appendChild(row);
+      sideChat.scrollTop = sideChat.scrollHeight;
+      subtitleText.textContent = text;
+    }
+
+    function updateSendButton() {
+      if (chatInput.value.trim().length > 0) {
+        sendBtn.classList.add("show");
+      } else {
+        sendBtn.classList.remove("show");
+      }
+    }
+
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      addMessage("user", text);
+      chatInput.value = "";
+      updateSendButton();
+
+      setTimeout(() => {
+        addMessage("ai", "서버 연결 전 테스트 응답입니다.");
+      }, 250);
+    }
+
+    openSettingsBtn.addEventListener("click", showSettings);
+    backChatBtn.addEventListener("click", showChat);
+    cancelSettingsBtn.addEventListener("click", showChat);
+
+    saveSettingsBtn.addEventListener("click", () => {
+      localStorage.setItem("mane_settings", JSON.stringify({
+        name: document.getElementById("settingName").value,
+        vrm: document.getElementById("settingVrm").value,
+        model: document.getElementById("settingModel").value,
+        stt: document.getElementById("settingStt").checked,
+        tts: document.getElementById("settingTts").checked
+      }));
+      showChat();
+    });
+
+    clearHistoryBtn.addEventListener("click", () => {
+      sideChat.innerHTML = "";
+      addMessage("ai", "대화 기록 초기화됨");
+    });
+
+    chatInput.addEventListener("input", updateSendButton);
+    chatInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") sendMessage();
+    });
+    sendBtn.addEventListener("click", sendMessage);
+  </script>
+</body>
+</html>

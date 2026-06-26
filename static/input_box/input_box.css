@@ -1,0 +1,16 @@
+<div class="input-panel">
+  <div class="status-row">
+    <div class="status-pill">idle</div>
+  </div>
+
+  <div class="message-area">
+    <button class="small-action mic-btn">🎙</button>
+    <button class="small-action hand-btn">✋</button>
+
+    <div class="input-wrap">
+      <span class="attach-icon">⌕</span>
+      <input id="chat-input" type="text" placeholder="Type your message..." />
+      <button id="send-btn" class="send-btn">➤</button>
+    </div>
+  </div>
+</div>
